@@ -51,7 +51,22 @@ Player.prototype.moveDown = function(){
   }
 }
 
+function Bird(state){
+  this.game = state.game;
+  Phaser.Sprite.call(this, this.game, 100, 100, 'bird');
+  this.verticalMoveSpeed = 60;
+  this.horizontalMoveSpeed = 32;
+  this.anchor.setTo(0.5, 0.5);
+  this.game.add.existing(this);
+  this.game.physics.arcade.enable(this);
+  this.body.collideWorldBounds = true;
+};
 
+Bird.prototype = Object.create(Phaser.Sprite.prototype);
+Bird.prototype.constructor = Bird;
+
+Bird.prototype.update = function(){
+}
 
 function Level1() {};
 
@@ -59,12 +74,14 @@ Level1.prototype = {
   preload: function(){
     this.game.load.image('background', 'assets/rockface_background.png')
     this.game.load.image('climber', 'assets/climber.png');
+    this.game.load.spritesheet('bird', 'assets/birdSprite.png', 24, 18);
   },
   create: function(){
     this.game.add.tileSprite(0, 0, 640, 600, 'background');
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.player = new Player(this);
+    this.bird = new Bird(this);
     this.game.physics.arcade.enable(this.player);
   },
   update: function(){
