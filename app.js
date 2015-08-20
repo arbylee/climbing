@@ -24,10 +24,6 @@ function Player(state){
   this.body.collideWorldBounds = true;
   this.cursors = this.game.input.keyboard.createCursorKeys();
 
-  this.cursors.left.onDown.add(this.moveLeft, this);
-  this.cursors.right.onDown.add(this.moveRight, this);
-  this.cursors.up.onDown.add(this.moveUp, this);
-  this.cursors.down.onDown.add(this.moveDown, this);
 };
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -36,6 +32,12 @@ Player.prototype.constructor = Player;
 Player.prototype.update = function(){
 }
 
+Player.prototype.setupControls = function(){
+  this.cursors.left.onDown.add(this.moveLeft, this);
+  this.cursors.right.onDown.add(this.moveRight, this);
+  this.cursors.up.onDown.add(this.moveUp, this);
+  this.cursors.down.onDown.add(this.moveDown, this);
+}
 
 Player.prototype.moveLeft = function(){
   if(this.x > 0){
@@ -65,6 +67,7 @@ function Bird(state){
   this.game = state.game;
   Phaser.Sprite.call(this, this.game, 100, 100, 'bird');
   this.exists = false;
+  this.alive = false;
   this.anchor.setTo(0.5, 0.5);
   this.game.add.existing(this);
   this.game.physics.arcade.enable(this);
@@ -101,18 +104,50 @@ Level1.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.player = new Player(this);
-    this.bird = new Bird(this);
+
+    this.birds = this.game.add.group();
+    for (i = 0; i < 20; i++) {
+      this.birds.add(new Bird(this));
+    }
+
     this.game.physics.arcade.enable(this.player);
+
+    this.ledgeTwoBirdLoop = this.game.time.events.loop(1500, this.spawnBird, this, this.birds, LEDGE_TWO_Y);
+    this.ledgeThreeBirdLoop = this.game.time.events.loop(1200, this.spawnBird, this, this.birds, LEDGE_THREE_Y);
+    this.ledgeFourBirdLoop = this.game.time.events.loop(1350, this.spawnBird, this, this.birds, LEDGE_FOUR_Y);
+    this.ledgeFiveBirdLoop = this.game.time.events.loop(900, this.spawnBird, this, this.birds, LEDGE_FIVE_Y);
+    this.ledgeSixBirdLoop = this.game.time.events.loop(1400, this.spawnBird, this, this.birds, LEDGE_SIX_Y);
+    this.ledgeSevenBirdLoop = this.game.time.events.loop(1800, this.spawnBird, this, this.birds, LEDGE_SEVEN_Y);
+    this.ledgeEightBirdLoop = this.game.time.events.loop(1200, this.spawnBird, this, this.birds, LEDGE_EIGHT_Y);
+    this.ledgeNineBirdLoop = this.game.time.events.loop(1000, this.spawnBird, this, this.birds, LEDGE_NINE_Y);
+
+
+    this.startTimer = 3;
+    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "16px Arial", fill: "#FFFFFF"});
+    this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
   },
   update: function(){
-    if(!this.bird.exists){
-      this.bird.reset(GAME_WIDTH+this.bird.body.width, LEDGE_TWO_Y-(this.bird.body.height / 2));
-      this.bird.revive();
+    this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
+    if(this.player.y <= LEDGE_TEN_Y){
+      this.game.state.start('level1')
     }
-    this.game.physics.arcade.overlap(this.player, this.bird, this.playerHitsObstacle, null, this);
   },
   playerHitsObstacle: function(){
     this.game.state.start('gameOver')
+  },
+  spawnBird: function(birds, ledge){
+    var bird = birds.getFirstDead();
+    bird.reset(GAME_WIDTH+bird.body.width, ledge-bird.body.height/2)
+    bird.revive();
+  },
+  updateStartTimer: function(){
+    this.startTimer -= 1;
+    this.startText.text = this.startTimer;
+    if(this.startTimer <= 0){
+      this.game.time.events.remove(this.startTimerLoop);
+      this.player.setupControls();
+      this.startText.kill();
+    }
   }
 };
 
