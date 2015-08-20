@@ -2,6 +2,16 @@ var GAME_WIDTH = 640;
 var GAME_HEIGHT = 600;
 var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, '')
 
+var LEDGE_ONE_Y = 570;
+var LEDGE_TWO_Y = 510;
+var LEDGE_THREE_Y = 450;
+var LEDGE_FOUR_Y = 390;
+var LEDGE_FIVE_Y = 330;
+var LEDGE_SIX_Y = 270;
+var LEDGE_SEVEN_Y = 210;
+var LEDGE_EIGHT_Y = 150;
+var LEDGE_NINE_Y = 90;
+var LEDGE_TEN_Y = 30;
 
 function Player(state){
   this.game = state.game;
@@ -54,18 +64,28 @@ Player.prototype.moveDown = function(){
 function Bird(state){
   this.game = state.game;
   Phaser.Sprite.call(this, this.game, 100, 100, 'bird');
-  this.verticalMoveSpeed = 60;
-  this.horizontalMoveSpeed = 32;
+  this.exists = false;
   this.anchor.setTo(0.5, 0.5);
   this.game.add.existing(this);
   this.game.physics.arcade.enable(this);
-  this.body.collideWorldBounds = true;
+  this.body.collideWorldBounds = false;
+  this.moveSpeed = 350;
+
+  this.animations.add('flap', [0, 1], 6, true);
 };
 
 Bird.prototype = Object.create(Phaser.Sprite.prototype);
 Bird.prototype.constructor = Bird;
 
 Bird.prototype.update = function(){
+  if(this.body.x < -this.body.width){
+    this.kill();
+  }
+}
+
+Bird.prototype.revive = function(){
+  this.body.velocity.x = -this.moveSpeed;
+  this.animations.play('flap')
 }
 
 function Level1() {};
@@ -85,6 +105,10 @@ Level1.prototype = {
     this.game.physics.arcade.enable(this.player);
   },
   update: function(){
+    if(!this.bird.exists){
+      this.bird.reset(GAME_WIDTH+this.bird.body.width, LEDGE_TWO_Y-(this.bird.body.height / 2));
+      this.bird.revive();
+    }
   }
 };
 
