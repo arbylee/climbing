@@ -215,6 +215,77 @@ Level2.prototype = {
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
     if(this.player.y <= LEDGE_TEN_Y){
+      this.game.state.start('level3');
+    }
+  },
+  playerHitsObstacle: function(){
+    this.game.state.start('gameOver')
+  },
+  spawnBird: function(birds, ledge){
+    var bird = birds.getFirstDead();
+    bird.reset(GAME_WIDTH+bird.body.width, ledge-bird.body.height/2)
+    bird.revive();
+  },
+  spawnPlane: function(planes, ledge){
+    var plane = planes.getFirstDead();
+    plane.reset(GAME_WIDTH+plane.body.width, ledge-plane.body.height/2)
+    plane.revive();
+  },
+  updateStartTimer: function(){
+    this.startTimer -= 1;
+    this.startText.text = this.startTimer;
+    if(this.startTimer <= 0){
+      this.game.time.events.remove(this.startTimerLoop);
+      this.player.setupControls();
+      this.startText.kill();
+    }
+  },
+  randomSlow: function(){
+    return this.game.rnd.between(1300, 1800);
+  },
+  randomMedium: function(){
+    return this.game.rnd.between(900, 1400);
+  }
+};
+
+function Level3() {};
+
+Level3.prototype = {
+  create: function(){
+    this.game.add.tileSprite(0, 0, 640, 600, 'background');
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    this.player = new Player(this);
+
+    this.birds = this.game.add.group();
+    for (i = 0; i < 20; i++) {
+      this.birds.add(new Bird(this));
+    }
+
+    this.planes = this.game.add.group();
+    for (i = 0; i < 20; i++) {
+      this.planes.add(new Plane(this));
+    }
+
+    this.game.physics.arcade.enable(this.player);
+
+    this.ledgeTwoPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_TWO_Y);
+    this.ledgeThreePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_THREE_Y);
+    this.ledgeFourPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_FOUR_Y);
+    this.ledgeFivePlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_FIVE_Y);
+    this.ledgeSixPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_SIX_Y);
+    this.ledgeSevenPlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_SEVEN_Y);
+    this.ledgeEightPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_EIGHT_Y);
+    this.ledgeNinePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_NINE_Y);
+
+
+    this.startTimer = 3;
+    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "16px Arial", fill: "#FFFFFF"});
+    this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
+  },
+  update: function(){
+    this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
+    if(this.player.y <= LEDGE_TEN_Y){
       this.game.state.start('youWin');
     }
   },
@@ -293,6 +364,7 @@ YouWin.prototype = {
 
 game.state.add('level1', Level1);
 game.state.add('level2', Level2);
+game.state.add('level3', Level3);
 game.state.add('gameOver', GameOver);
 game.state.add('preloader', Preloader);
 game.state.add('youWin', YouWin);
