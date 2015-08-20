@@ -109,8 +109,26 @@ Level1.prototype = {
       this.bird.reset(GAME_WIDTH+this.bird.body.width, LEDGE_TWO_Y-(this.bird.body.height / 2));
       this.bird.revive();
     }
+    this.game.physics.arcade.overlap(this.player, this.bird, this.playerHitsObstacle, null, this);
+  },
+  playerHitsObstacle: function(){
+    this.game.state.start('gameOver')
   }
 };
 
+function GameOver(){};
+
+GameOver.prototype = {
+  create: function(){
+    this.game.add.text(170, 200, "YOU LOSE. TRY HARDER NEXT TIME", {font: "16px Arial", fill: "#FFFFFF"})
+  },
+  update: function(){
+    if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+      this.game.state.start('level1');
+    };
+  }
+}
+
 game.state.add('level1', Level1);
+game.state.add('gameOver', GameOver);
 game.state.start('level1');
