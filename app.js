@@ -132,14 +132,14 @@ Level1.prototype = {
 
     this.game.physics.arcade.enable(this.player);
 
-    this.ledgeTwoBirdLoop = this.game.time.events.loop(1500, this.spawnBird, this, this.birds, LEDGE_TWO_Y);
-    this.ledgeThreeBirdLoop = this.game.time.events.loop(1200, this.spawnBird, this, this.birds, LEDGE_THREE_Y);
-    this.ledgeFourBirdLoop = this.game.time.events.loop(1350, this.spawnBird, this, this.birds, LEDGE_FOUR_Y);
-    this.ledgeFiveBirdLoop = this.game.time.events.loop(900, this.spawnBird, this, this.birds, LEDGE_FIVE_Y);
-    this.ledgeSixBirdLoop = this.game.time.events.loop(1400, this.spawnBird, this, this.birds, LEDGE_SIX_Y);
-    this.ledgeSevenBirdLoop = this.game.time.events.loop(1800, this.spawnBird, this, this.birds, LEDGE_SEVEN_Y);
-    this.ledgeEightBirdLoop = this.game.time.events.loop(1200, this.spawnBird, this, this.birds, LEDGE_EIGHT_Y);
-    this.ledgeNineBirdLoop = this.game.time.events.loop(1000, this.spawnBird, this, this.birds, LEDGE_NINE_Y);
+    this.ledgeTwoBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_TWO_Y);
+    this.ledgeThreeBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_THREE_Y);
+    this.ledgeFourBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_FOUR_Y);
+    this.ledgeFiveBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_FIVE_Y);
+    this.ledgeSixBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_SIX_Y);
+    this.ledgeSevenBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_SEVEN_Y);
+    this.ledgeEightBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_EIGHT_Y);
+    this.ledgeNineBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_NINE_Y);
 
 
     this.startTimer = 3;
@@ -168,6 +168,12 @@ Level1.prototype = {
       this.player.setupControls();
       this.startText.kill();
     }
+  },
+  randomSlow: function(){
+    return this.game.rnd.between(1300, 1800);
+  },
+  randomMedium: function(){
+    return this.game.rnd.between(900, 1400);
   }
 };
 
@@ -192,14 +198,14 @@ Level2.prototype = {
 
     this.game.physics.arcade.enable(this.player);
 
-    this.ledgeTwoBirdLoop = this.game.time.events.loop(1500, this.spawnBird, this, this.birds, LEDGE_TWO_Y);
-    this.ledgeThreePlaneLoop = this.game.time.events.loop(1200, this.spawnPlane, this, this.planes, LEDGE_THREE_Y);
-    this.ledgeFourPlaneLoop = this.game.time.events.loop(1350, this.spawnPlane, this, this.planes, LEDGE_FOUR_Y);
-    this.ledgeFiveBirdLoop = this.game.time.events.loop(900, this.spawnBird, this, this.birds, LEDGE_FIVE_Y);
-    this.ledgeSixPlaneLoop = this.game.time.events.loop(1400, this.spawnPlane, this, this.planes, LEDGE_SIX_Y);
-    this.ledgeSevenBirdLoop = this.game.time.events.loop(1800, this.spawnBird, this, this.birds, LEDGE_SEVEN_Y);
-    this.ledgeEightBirdLoop = this.game.time.events.loop(1200, this.spawnBird, this, this.birds, LEDGE_EIGHT_Y);
-    this.ledgeNinePlaneLoop = this.game.time.events.loop(1000, this.spawnPlane, this, this.planes, LEDGE_NINE_Y);
+    this.ledgeTwoBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_TWO_Y);
+    this.ledgeThreePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_THREE_Y);
+    this.ledgeFourPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_FOUR_Y);
+    this.ledgeFiveBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_FIVE_Y);
+    this.ledgeSixPlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_SIX_Y);
+    this.ledgeSevenBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_SEVEN_Y);
+    this.ledgeEightBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_EIGHT_Y);
+    this.ledgeNinePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_NINE_Y);
 
 
     this.startTimer = 3;
@@ -233,6 +239,12 @@ Level2.prototype = {
       this.player.setupControls();
       this.startText.kill();
     }
+  },
+  randomSlow: function(){
+    return this.game.rnd.between(1300, 1800);
+  },
+  randomMedium: function(){
+    return this.game.rnd.between(900, 1400);
   }
 };
 
