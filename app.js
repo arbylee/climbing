@@ -13,6 +13,8 @@ var LEDGE_EIGHT_Y = 150;
 var LEDGE_NINE_Y = 90;
 var LEDGE_TEN_Y = 30;
 
+var GlobalGame = {};
+
 function Player(state){
   this.game = state.game;
   Phaser.Sprite.call(this, this.game, 304, 570, 'climber');
@@ -169,6 +171,11 @@ Level1.prototype = {
     this.startTimer = 3;
     this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "16px Arial", fill: "#FFFFFF"});
     this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
+
+    GlobalGame.backgroundMusic = this.game.add.audio('doopa');
+    GlobalGame.backgroundMusic.volume = 0.6;
+    GlobalGame.backgroundMusic.loop = true;
+    GlobalGame.backgroundMusic.play();
   },
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
@@ -177,6 +184,8 @@ Level1.prototype = {
     }
   },
   playerHitsObstacle: function(){
+    GlobalGame.backgroundMusic.loop = false;
+    GlobalGame.backgroundMusic.stop();
     this.game.state.start('gameOver')
   },
   spawnObstacle: function(obstacles, ledge){
@@ -244,6 +253,8 @@ Level2.prototype = {
     }
   },
   playerHitsObstacle: function(){
+    GlobalGame.backgroundMusic.loop = false;
+    GlobalGame.backgroundMusic.stop();
     this.game.state.start('gameOver')
   },
   spawnObstacle: function(obstacles, ledge){
@@ -311,6 +322,8 @@ Level3.prototype = {
     }
   },
   playerHitsObstacle: function(){
+    GlobalGame.backgroundMusic.loop = false;
+    GlobalGame.backgroundMusic.stop();
     this.game.state.start('gameOver')
   },
   spawnObstacle: function(obstacles, ledge){
@@ -384,6 +397,8 @@ Level4.prototype = {
     }
   },
   playerHitsObstacle: function(){
+    GlobalGame.backgroundMusic.loop = false;
+    GlobalGame.backgroundMusic.stop();
     this.game.state.start('gameOver')
   },
   spawnObstacle: function(obstacles, ledge){
@@ -416,6 +431,7 @@ Preloader.prototype = {
     this.game.load.image('climber', 'assets/climber.png');
     this.game.load.image('plane', 'assets/plane.png');
     this.game.load.image('meteor', 'assets/meteor.png');
+    this.game.load.audio('doopa', 'assets/doopadoopa.m4a');
     this.game.load.spritesheet('bird', 'assets/birdSprite.png', 24, 18);
   },
   create: function(){
@@ -443,6 +459,8 @@ function YouWin(){};
 YouWin.prototype = {
   create: function(){
     this.game.add.text(250, 200, "CRUSH YOUR GOALS", {font: "16px Arial", fill: "#FFFFFF"})
+    GlobalGame.backgroundMusic.loop = false;
+    GlobalGame.backgroundMusic.stop();
   },
   update: function(){
     if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
