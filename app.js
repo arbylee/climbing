@@ -203,10 +203,10 @@ Level1.prototype = {
     }
   },
   randomSlow: function(){
-    return this.game.rnd.between(1300, 1800);
+    return this.game.rnd.between(1500, 1900);
   },
   randomMedium: function(){
-    return this.game.rnd.between(900, 1400);
+    return this.game.rnd.between(1100, 1500);
   }
 };
 
@@ -272,10 +272,10 @@ Level2.prototype = {
     }
   },
   randomSlow: function(){
-    return this.game.rnd.between(1300, 1800);
+    return this.game.rnd.between(1500, 1900);
   },
   randomMedium: function(){
-    return this.game.rnd.between(900, 1400);
+    return this.game.rnd.between(1000, 1500);
   }
 };
 
