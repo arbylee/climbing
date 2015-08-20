@@ -116,6 +116,30 @@ Plane.prototype.revive = function(){
   this.body.velocity.x = -this.moveSpeed;
 }
 
+function Meteor(state){
+  this.game = state.game;
+  Phaser.Sprite.call(this, this.game, 0, 0, 'meteor');
+  this.exists = false;
+  this.alive = false;
+  this.anchor.setTo(0.5, 0.5);
+  this.game.add.existing(this);
+  this.game.physics.arcade.enable(this);
+  this.body.collideWorldBounds = false;
+  this.moveSpeed = 650;
+};
+
+Meteor.prototype = Object.create(Phaser.Sprite.prototype);
+Meteor.prototype.constructor = Meteor;
+
+Meteor.prototype.update = function(){
+  if(this.body.x < -this.body.width){
+    this.kill();
+  }
+}
+
+Meteor.prototype.revive = function(){
+  this.body.velocity.x = -this.moveSpeed;
+}
 function Level1() {};
 
 Level1.prototype = {
@@ -132,14 +156,14 @@ Level1.prototype = {
 
     this.game.physics.arcade.enable(this.player);
 
-    this.ledgeTwoBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_TWO_Y);
-    this.ledgeThreeBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_THREE_Y);
-    this.ledgeFourBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_FOUR_Y);
-    this.ledgeFiveBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_FIVE_Y);
-    this.ledgeSixBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_SIX_Y);
-    this.ledgeSevenBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_SEVEN_Y);
-    this.ledgeEightBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_EIGHT_Y);
-    this.ledgeNineBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_NINE_Y);
+    this.ledgeTwoBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_TWO_Y);
+    this.ledgeThreeBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_THREE_Y);
+    this.ledgeFourBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_FOUR_Y);
+    this.ledgeFiveBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_FIVE_Y);
+    this.ledgeSixBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_SIX_Y);
+    this.ledgeSevenBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_SEVEN_Y);
+    this.ledgeEightBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_EIGHT_Y);
+    this.ledgeNineBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_NINE_Y);
 
 
     this.startTimer = 3;
@@ -155,10 +179,10 @@ Level1.prototype = {
   playerHitsObstacle: function(){
     this.game.state.start('gameOver')
   },
-  spawnBird: function(birds, ledge){
-    var bird = birds.getFirstDead();
-    bird.reset(GAME_WIDTH+bird.body.width, ledge-bird.body.height/2)
-    bird.revive();
+  spawnObstacle: function(obstacles, ledge){
+    var obstacle = obstacles.getFirstDead();
+    obstacle.reset(GAME_WIDTH+obstacle.body.width, ledge-obstacle.body.height/2)
+    obstacle.revive();
   },
   updateStartTimer: function(){
     this.startTimer -= 1;
@@ -198,14 +222,14 @@ Level2.prototype = {
 
     this.game.physics.arcade.enable(this.player);
 
-    this.ledgeTwoBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_TWO_Y);
-    this.ledgeThreePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_THREE_Y);
-    this.ledgeFourPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_FOUR_Y);
-    this.ledgeFiveBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_FIVE_Y);
-    this.ledgeSixPlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_SIX_Y);
-    this.ledgeSevenBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnBird, this, this.birds, LEDGE_SEVEN_Y);
-    this.ledgeEightBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnBird, this, this.birds, LEDGE_EIGHT_Y);
-    this.ledgeNinePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_NINE_Y);
+    this.ledgeTwoBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_TWO_Y);
+    this.ledgeThreePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_THREE_Y);
+    this.ledgeFourPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FOUR_Y);
+    this.ledgeFiveBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_FIVE_Y);
+    this.ledgeSixPlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_SIX_Y);
+    this.ledgeSevenBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_SEVEN_Y);
+    this.ledgeEightBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_EIGHT_Y);
+    this.ledgeNinePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_NINE_Y);
 
 
     this.startTimer = 3;
@@ -221,15 +245,10 @@ Level2.prototype = {
   playerHitsObstacle: function(){
     this.game.state.start('gameOver')
   },
-  spawnBird: function(birds, ledge){
-    var bird = birds.getFirstDead();
-    bird.reset(GAME_WIDTH+bird.body.width, ledge-bird.body.height/2)
-    bird.revive();
-  },
-  spawnPlane: function(planes, ledge){
-    var plane = planes.getFirstDead();
-    plane.reset(GAME_WIDTH+plane.body.width, ledge-plane.body.height/2)
-    plane.revive();
+  spawnObstacle: function(obstacles, ledge){
+    var obstacle = obstacles.getFirstDead();
+    obstacle.reset(GAME_WIDTH+obstacle.body.width, ledge-obstacle.body.height/2)
+    obstacle.revive();
   },
   updateStartTimer: function(){
     this.startTimer -= 1;
@@ -269,14 +288,14 @@ Level3.prototype = {
 
     this.game.physics.arcade.enable(this.player);
 
-    this.ledgeTwoPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_TWO_Y);
-    this.ledgeThreePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_THREE_Y);
-    this.ledgeFourPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_FOUR_Y);
-    this.ledgeFivePlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_FIVE_Y);
-    this.ledgeSixPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_SIX_Y);
-    this.ledgeSevenPlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_SEVEN_Y);
-    this.ledgeEightPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnPlane, this, this.planes, LEDGE_EIGHT_Y);
-    this.ledgeNinePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnPlane, this, this.planes, LEDGE_NINE_Y);
+    this.ledgeTwoPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_TWO_Y);
+    this.ledgeThreePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_THREE_Y);
+    this.ledgeFourPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FOUR_Y);
+    this.ledgeFivePlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FIVE_Y);
+    this.ledgeSixPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_SIX_Y);
+    this.ledgeSevenPlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_SEVEN_Y);
+    this.ledgeEightPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_EIGHT_Y);
+    this.ledgeNinePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_NINE_Y);
 
 
     this.startTimer = 3;
@@ -286,21 +305,16 @@ Level3.prototype = {
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
     if(this.player.y <= LEDGE_TEN_Y){
-      this.game.state.start('youWin');
+      this.game.state.start('level4');
     }
   },
   playerHitsObstacle: function(){
     this.game.state.start('gameOver')
   },
-  spawnBird: function(birds, ledge){
-    var bird = birds.getFirstDead();
-    bird.reset(GAME_WIDTH+bird.body.width, ledge-bird.body.height/2)
-    bird.revive();
-  },
-  spawnPlane: function(planes, ledge){
-    var plane = planes.getFirstDead();
-    plane.reset(GAME_WIDTH+plane.body.width, ledge-plane.body.height/2)
-    plane.revive();
+  spawnObstacle: function(obstacles, ledge){
+    var obstacle = obstacles.getFirstDead();
+    obstacle.reset(GAME_WIDTH+obstacle.body.width, ledge-obstacle.body.height/2)
+    obstacle.revive();
   },
   updateStartTimer: function(){
     this.startTimer -= 1;
@@ -319,6 +333,76 @@ Level3.prototype = {
   }
 };
 
+function Level4() {};
+
+Level4.prototype = {
+  create: function(){
+    this.game.add.tileSprite(0, 0, 640, 600, 'background');
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    this.player = new Player(this);
+
+    this.birds = this.game.add.group();
+    for (i = 0; i < 20; i++) {
+      this.birds.add(new Bird(this));
+    }
+
+    this.planes = this.game.add.group();
+    for (i = 0; i < 20; i++) {
+      this.planes.add(new Plane(this));
+    }
+
+    this.meteors = this.game.add.group();
+    for (i = 0; i < 20; i++) {
+      this.meteors.add(new Meteor(this));
+    }
+
+    this.game.physics.arcade.enable(this.player);
+
+    this.ledgeTwoLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_TWO_Y);
+    this.ledgeThreeLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.meteors, LEDGE_THREE_Y);
+    this.ledgeFourLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.meteors, LEDGE_FOUR_Y);
+    this.ledgeFiveLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FIVE_Y);
+    this.ledgeSixLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_SIX_Y);
+    this.ledgeSevenLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_SEVEN_Y);
+    this.ledgeEightLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_EIGHT_Y);
+    this.ledgeNineLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.meteors, LEDGE_NINE_Y);
+
+
+    this.startTimer = 3;
+    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "16px Arial", fill: "#FFFFFF"});
+    this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
+  },
+  update: function(){
+    this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
+    if(this.player.y <= LEDGE_TEN_Y){
+      this.game.state.start('youWin');
+    }
+  },
+  playerHitsObstacle: function(){
+    this.game.state.start('gameOver')
+  },
+  spawnObstacle: function(obstacles, ledge){
+    var obstacle = obstacles.getFirstDead();
+    obstacle.reset(GAME_WIDTH+obstacle.body.width, ledge-obstacle.body.height/2)
+    obstacle.revive();
+  },
+  updateStartTimer: function(){
+    this.startTimer -= 1;
+    this.startText.text = this.startTimer;
+    if(this.startTimer <= 0){
+      this.game.time.events.remove(this.startTimerLoop);
+      this.player.setupControls();
+      this.startText.kill();
+    }
+  },
+  randomSlow: function(){
+    return this.game.rnd.between(1300, 1800);
+  },
+  randomMedium: function(){
+    return this.game.rnd.between(900, 1400);
+  }
+};
 
 function Preloader(){};
 
@@ -327,6 +411,7 @@ Preloader.prototype = {
     this.game.load.image('background', 'assets/rockface_background.png')
     this.game.load.image('climber', 'assets/climber.png');
     this.game.load.image('plane', 'assets/plane.png');
+    this.game.load.image('meteor', 'assets/meteor.png');
     this.game.load.spritesheet('bird', 'assets/birdSprite.png', 24, 18);
   },
   create: function(){
@@ -365,6 +450,7 @@ YouWin.prototype = {
 game.state.add('level1', Level1);
 game.state.add('level2', Level2);
 game.state.add('level3', Level3);
+game.state.add('level4', Level4);
 game.state.add('gameOver', GameOver);
 game.state.add('preloader', Preloader);
 game.state.add('youWin', YouWin);
