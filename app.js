@@ -156,14 +156,14 @@ Level1.prototype = {
 
     this.game.physics.arcade.enable(this.player);
 
-    this.ledgeTwoBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_TWO_Y);
-    this.ledgeThreeBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_THREE_Y);
-    this.ledgeFourBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_FOUR_Y);
-    this.ledgeFiveBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_FIVE_Y);
-    this.ledgeSixBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_SIX_Y);
-    this.ledgeSevenBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_SEVEN_Y);
-    this.ledgeEightBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_EIGHT_Y);
-    this.ledgeNineBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_NINE_Y);
+    this.ledgeTwoLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_TWO_Y);
+    this.ledgeThreeLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_THREE_Y);
+    this.ledgeFourLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_FOUR_Y);
+    this.ledgeFiveLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_FIVE_Y);
+    this.ledgeSixLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_SIX_Y);
+    this.ledgeSevenLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_SEVEN_Y);
+    this.ledgeEightLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_EIGHT_Y);
+    this.ledgeNineLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_NINE_Y);
 
 
     this.startTimer = 3;
@@ -222,14 +222,14 @@ Level2.prototype = {
 
     this.game.physics.arcade.enable(this.player);
 
-    this.ledgeTwoBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_TWO_Y);
-    this.ledgeThreePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_THREE_Y);
-    this.ledgeFourPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FOUR_Y);
-    this.ledgeFiveBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_FIVE_Y);
-    this.ledgeSixPlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_SIX_Y);
-    this.ledgeSevenBirdLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_SEVEN_Y);
-    this.ledgeEightBirdLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_EIGHT_Y);
-    this.ledgeNinePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_NINE_Y);
+    this.ledgeTwoLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_TWO_Y);
+    this.ledgeThreeLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_THREE_Y);
+    this.ledgeFourLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FOUR_Y);
+    this.ledgeFiveLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_FIVE_Y);
+    this.ledgeSixLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_SIX_Y);
+    this.ledgeSevenLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_SEVEN_Y);
+    this.ledgeEightLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_EIGHT_Y);
+    this.ledgeNineLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_NINE_Y);
 
 
     this.startTimer = 3;
@@ -238,6 +238,7 @@ Level2.prototype = {
   },
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
+    this.game.physics.arcade.overlap(this.player, this.planes, this.playerHitsObstacle, null, this);
     if(this.player.y <= LEDGE_TEN_Y){
       this.game.state.start('level3');
     }
@@ -288,14 +289,14 @@ Level3.prototype = {
 
     this.game.physics.arcade.enable(this.player);
 
-    this.ledgeTwoPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_TWO_Y);
-    this.ledgeThreePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_THREE_Y);
-    this.ledgeFourPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FOUR_Y);
-    this.ledgeFivePlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FIVE_Y);
-    this.ledgeSixPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_SIX_Y);
-    this.ledgeSevenPlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_SEVEN_Y);
-    this.ledgeEightPlaneLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_EIGHT_Y);
-    this.ledgeNinePlaneLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_NINE_Y);
+    this.ledgeTwoLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_TWO_Y);
+    this.ledgeThreeLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_THREE_Y);
+    this.ledgeFourLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_FOUR_Y);
+    this.ledgeFiveLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.birds, LEDGE_FIVE_Y);
+    this.ledgeSixLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_SIX_Y);
+    this.ledgeSevenLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.birds, LEDGE_SEVEN_Y);
+    this.ledgeEightLoop = this.game.time.events.loop(this.randomMedium(), this.spawnObstacle, this, this.planes, LEDGE_EIGHT_Y);
+    this.ledgeNineLoop = this.game.time.events.loop(this.randomSlow(), this.spawnObstacle, this, this.planes, LEDGE_NINE_Y);
 
 
     this.startTimer = 3;
@@ -304,6 +305,7 @@ Level3.prototype = {
   },
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
+    this.game.physics.arcade.overlap(this.player, this.planes, this.playerHitsObstacle, null, this);
     if(this.player.y <= LEDGE_TEN_Y){
       this.game.state.start('level4');
     }
@@ -375,6 +377,8 @@ Level4.prototype = {
   },
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
+    this.game.physics.arcade.overlap(this.player, this.planes, this.playerHitsObstacle, null, this);
+    this.game.physics.arcade.overlap(this.player, this.meteors, this.playerHitsObstacle, null, this);
     if(this.player.y <= LEDGE_TEN_Y){
       this.game.state.start('youWin');
     }
