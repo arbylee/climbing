@@ -127,6 +127,27 @@ Player.prototype.setupControls = function(){
   this.cursors.right.onDown.add(this.moveRight, this);
   this.cursors.up.onDown.add(this.moveUp, this);
   this.cursors.down.onDown.add(this.moveDown, this);
+
+  gameSectionWidth = GAME_WIDTH/3;
+  gameSectionHeight = GAME_HEIGHT/3;
+
+  this.game.input.onDown.add(function() {
+    if (this.game.input.y < gameSectionHeight){
+      this.moveUp();
+    } else if(this.game.input.y > gameSectionHeight*2) {
+      this.moveDown();
+    } else if(this.game.input.y > gameSectionHeight &&
+        this.game.input.y < gameSectionHeight*2 &&
+        this.game.input.x > gameSectionWidth*2) {
+
+      this.moveRight();
+    } else if(this.game.input.y > gameSectionHeight &&
+        this.game.input.y < gameSectionHeight*2 &&
+        this.game.input.x < gameSectionHeight) {
+
+      this.moveLeft();
+    };
+  }, this);
 }
 
 Player.prototype.moveLeft = function(){
@@ -355,11 +376,15 @@ function GameOver(){};
 GameOver.prototype = {
   create: function(){
     this.game.add.text(170, 200, "YOU LOSE. TRY HARDER NEXT TIME", {font: "16px Arial", fill: "#FFFFFF"})
+    this.game.input.onDown.add(this.restartGame);
   },
   update: function(){
     if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-      this.game.state.start('level', true, false, LEVEL_PARAMS[0], 0);
+      this.restartGame();
     };
+  },
+  restartGame: function(){
+    this.game.state.start('level', true, false, LEVEL_PARAMS[0], 0);
   }
 }
 
@@ -370,11 +395,15 @@ YouWin.prototype = {
     this.game.add.text(250, 200, "CRUSH YOUR GOALS", {font: "16px Arial", fill: "#FFFFFF"})
     GlobalGame.backgroundMusic.loop = false;
     GlobalGame.backgroundMusic.stop();
+    this.game.input.onDown.add(this.restartGame);
   },
   update: function(){
     if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-      this.game.state.start('level', true, false, LEVEL_PARAMS[0], 0);
+      this.restartGame();
     };
+  },
+  restartGame: function(){
+    this.game.state.start('level', true, false, LEVEL_PARAMS[0], 0);
   }
 }
 
