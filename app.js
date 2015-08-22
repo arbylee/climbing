@@ -43,33 +43,41 @@ var LEVEL_ONE_PARAMS = {
   '2': 'birds',
   '3': 'birds',
   '4': 'birds',
-  '5': 'birds',
   '6': 'birds',
   '7': 'birds',
   '8': 'birds',
-  '9': 'birds'
+  '9': 'birds',
+  '11': 'birds',
+  '12': 'birds',
+  '13': 'birds',
+  '14': 'birds'
 }
 
 var LEVEL_TWO_PARAMS = {
   '2': 'birds',
   '3': 'planes',
   '4': 'planes',
-  '5': 'birds',
   '6': 'planes',
   '7': 'birds',
   '8': 'birds',
-  '9': 'planes'
+  '10': 'planes',
+  '11': 'planes',
+  '13': 'planes',
+  '14': 'planes'
 }
 
 var LEVEL_THREE_PARAMS = {
   '2': 'planes',
   '3': 'planes',
-  '4': 'planes',
   '5': 'birds',
   '6': 'planes',
   '7': 'birds',
   '8': 'planes',
-  '9': 'planes'
+  '9': 'planes',
+  '10': 'planes',
+  '11': 'birds',
+  '13': 'planes',
+  '14': 'planes',
 }
 
 var LEVEL_FOUR_PARAMS = {
@@ -77,10 +85,13 @@ var LEVEL_FOUR_PARAMS = {
   '3': 'meteors',
   '4': 'meteors',
   '5': 'planes',
-  '6': 'birds',
   '7': 'planes',
   '8': 'birds',
-  '9': 'meteors'
+  '9': 'meteors',
+  '10': 'meteors',
+  '12': 'meteors',
+  '13': 'planes',
+  '14': 'meteors'
 }
 
 var LEVEL_PARAMS = [
@@ -219,6 +230,7 @@ Meteor.prototype.update = function(){
 Meteor.prototype.revive = function(){
   this.body.velocity.x = -this.moveSpeed;
 }
+
 function Level() {
 };
 
