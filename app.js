@@ -1,23 +1,31 @@
 var GAME_WIDTH = 640;
-var GAME_HEIGHT = 600;
+var GAME_HEIGHT = 900;
 var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, '')
 
-var LEDGE_ONE_Y = 570;
-var LEDGE_TWO_Y = 510;
-var LEDGE_THREE_Y = 450;
-var LEDGE_FOUR_Y = 390;
-var LEDGE_FIVE_Y = 330;
-var LEDGE_SIX_Y = 270;
-var LEDGE_SEVEN_Y = 210;
-var LEDGE_EIGHT_Y = 150;
-var LEDGE_NINE_Y = 90;
-var LEDGE_TEN_Y = 30;
+var PLAYER_SPRITE_WIDTH = 32;
+var PLAYER_SPRITE_HEIGHT = 60;
+
+var LEDGE_ONE_Y = GAME_HEIGHT - PLAYER_SPRITE_HEIGHT/2;
+var LEDGE_TWO_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT;
+var LEDGE_THREE_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 2;
+var LEDGE_FOUR_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 3;
+var LEDGE_FIVE_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 4;
+var LEDGE_SIX_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 5;
+var LEDGE_SEVEN_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 6;
+var LEDGE_EIGHT_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 7;
+var LEDGE_NINE_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 8;
+var LEDGE_TEN_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 9;
+var LEDGE_ELEVEN_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 10;
+var LEDGE_TWELVE_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 11;
+var LEDGE_THIRTEEN_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 12;
+var LEDGE_FOURTEEN_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 13;
+var LEDGE_FIFTEEN_Y = GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2) - PLAYER_SPRITE_HEIGHT * 14;
 
 var GlobalGame = {};
 
 function Player(state){
   this.game = state.game;
-  Phaser.Sprite.call(this, this.game, 304, 570, 'climber');
+  Phaser.Sprite.call(this, this.game, GAME_WIDTH/2-PLAYER_SPRITE_WIDTH/2, GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2), 'climber');
   this.verticalMoveSpeed = 60;
   this.horizontalMoveSpeed = 32;
   this.anchor.setTo(0.5, 0.5);
@@ -146,7 +154,9 @@ function Level1() {};
 
 Level1.prototype = {
   create: function(){
-    this.game.add.tileSprite(0, 0, 640, 600, 'background');
+    this.backgroundSprite = this.game.add.sprite(0, 0, 'background');
+    this.backgroundSprite.width = GAME_WIDTH;
+    this.backgroundSprite.height = GAME_HEIGHT;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.player = new Player(this);
@@ -169,17 +179,24 @@ Level1.prototype = {
 
 
     this.startTimer = 3;
-    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "16px Arial", fill: "#FFFFFF"});
+    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "32px Arial", fill: "#FFFFFF"});
     this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
 
     GlobalGame.backgroundMusic = this.game.add.audio('doopa');
     GlobalGame.backgroundMusic.volume = 0.6;
     GlobalGame.backgroundMusic.loop = true;
     GlobalGame.backgroundMusic.play();
+
+    this.game.input.maxPointers = 1;
+
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.setResizeCallback(function () {
+        this.game.scale.setResizeCallback(this.resize, this);
+    }, this);
   },
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
-    if(this.player.y <= LEDGE_TEN_Y){
+    if(this.player.y <= LEDGE_FIFTEEN_Y){
       this.game.state.start('level2')
     }
   },
@@ -214,7 +231,9 @@ function Level2() {};
 
 Level2.prototype = {
   create: function(){
-    this.game.add.tileSprite(0, 0, 640, 600, 'background');
+    this.backgroundSprite = this.game.add.sprite(0, 0, 'background');
+    this.backgroundSprite.width = GAME_WIDTH;
+    this.backgroundSprite.height = GAME_HEIGHT;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.player = new Player(this);
@@ -242,13 +261,13 @@ Level2.prototype = {
 
 
     this.startTimer = 3;
-    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "16px Arial", fill: "#FFFFFF"});
+    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "32px Arial", fill: "#FFFFFF"});
     this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
   },
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
     this.game.physics.arcade.overlap(this.player, this.planes, this.playerHitsObstacle, null, this);
-    if(this.player.y <= LEDGE_TEN_Y){
+    if(this.player.y <= LEDGE_FIFTEEN_Y){
       this.game.state.start('level3');
     }
   },
@@ -283,7 +302,9 @@ function Level3() {};
 
 Level3.prototype = {
   create: function(){
-    this.game.add.tileSprite(0, 0, 640, 600, 'background');
+    this.backgroundSprite = this.game.add.sprite(0, 0, 'background');
+    this.backgroundSprite.width = GAME_WIDTH;
+    this.backgroundSprite.height = GAME_HEIGHT;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.player = new Player(this);
@@ -311,13 +332,13 @@ Level3.prototype = {
 
 
     this.startTimer = 3;
-    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "16px Arial", fill: "#FFFFFF"});
+    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "32px Arial", fill: "#FFFFFF"});
     this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
   },
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
     this.game.physics.arcade.overlap(this.player, this.planes, this.playerHitsObstacle, null, this);
-    if(this.player.y <= LEDGE_TEN_Y){
+    if(this.player.y <= LEDGE_FIFTEEN_Y){
       this.game.state.start('level4');
     }
   },
@@ -352,7 +373,9 @@ function Level4() {};
 
 Level4.prototype = {
   create: function(){
-    this.game.add.tileSprite(0, 0, 640, 600, 'background');
+    this.backgroundSprite = this.game.add.sprite(0, 0, 'background');
+    this.backgroundSprite.width = GAME_WIDTH;
+    this.backgroundSprite.height = GAME_HEIGHT;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.player = new Player(this);
@@ -385,14 +408,14 @@ Level4.prototype = {
 
 
     this.startTimer = 3;
-    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "16px Arial", fill: "#FFFFFF"});
+    this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "32px Arial", fill: "#FFFFFF"});
     this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
   },
   update: function(){
     this.game.physics.arcade.overlap(this.player, this.birds, this.playerHitsObstacle, null, this);
     this.game.physics.arcade.overlap(this.player, this.planes, this.playerHitsObstacle, null, this);
     this.game.physics.arcade.overlap(this.player, this.meteors, this.playerHitsObstacle, null, this);
-    if(this.player.y <= LEDGE_TEN_Y){
+    if(this.player.y <= LEDGE_FIFTEEN_Y){
       this.game.state.start('youWin');
     }
   },
