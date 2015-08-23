@@ -263,6 +263,7 @@ Level.prototype = {
     this.backgroundSprite.width = GAME_WIDTH;
     this.backgroundSprite.height = GAME_HEIGHT;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.scale.pageAlignHorizontally = true;
 
     this.player = new Player(this);
 
