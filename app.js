@@ -101,8 +101,6 @@ var LEVEL_PARAMS = [
   LEVEL_FOUR_PARAMS
 ]
 
-var GlobalGame = {};
-
 function Player(state){
   this.game = state.game;
   Phaser.Sprite.call(this, this.game, GAME_WIDTH/2-PLAYER_SPRITE_WIDTH/2, GAME_HEIGHT - (PLAYER_SPRITE_HEIGHT/2), 'climber');
@@ -304,10 +302,9 @@ Level.prototype = {
     this.startText = this.game.add.text(GAME_WIDTH/2, GAME_HEIGHT/2, this.startTimer, {font: "32px Arial", fill: "#FFFFFF"});
     this.startTimerLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateStartTimer, this);
 
-    GlobalGame.backgroundMusic = this.game.add.audio('doopa');
-    GlobalGame.backgroundMusic.volume = 0.6;
-    GlobalGame.backgroundMusic.loop = true;
-    GlobalGame.backgroundMusic.play();
+    this.backgroundMusic = this.game.add.audio('doopa');
+    this.backgroundMusic.volume = 0.6;
+    this.toggleBackgroundMusic(true);
 
     this.game.input.maxPointers = 1;
 
@@ -317,7 +314,6 @@ Level.prototype = {
     }, this);
   },
   update: function(){
-
     for (var obstacleType in this.obstacleMap) {
       if (this.obstacleMap.hasOwnProperty(obstacleType)) {
         this.game.physics.arcade.overlap(this.player, this.obstacleMap[obstacleType], this.playerHitsObstacle, null, this);
@@ -326,15 +322,16 @@ Level.prototype = {
     if(this.player.y <= LEDGE_FIFTEEN_Y){
       var nextLevelNumber = this.levelNumber + 1;
       if(nextLevelNumber >= LEVEL_PARAMS.length){
+        this.toggleBackgroundMusic(false);
         this.game.state.start('youWin');
       } else {
+        this.toggleBackgroundMusic(false);
         this.game.state.start('level', true, false, LEVEL_PARAMS[nextLevelNumber], nextLevelNumber)
       }
     }
   },
   playerHitsObstacle: function(){
-    GlobalGame.backgroundMusic.loop = false;
-    GlobalGame.backgroundMusic.stop();
+    this.toggleBackgroundMusic(false);
     this.game.state.start('gameOver')
   },
   spawnObstacle: function(obstacles, ledge){
@@ -349,6 +346,15 @@ Level.prototype = {
       this.game.time.events.remove(this.startTimerLoop);
       this.player.setupControls();
       this.startText.kill();
+    }
+  },
+  toggleBackgroundMusic: function(toggle){
+    if(toggle){
+      this.backgroundMusic.loop = true;
+      this.backgroundMusic.play();
+    } else {
+      this.backgroundMusic.loop = false;
+      this.backgroundMusic.stop();
     }
   }
 };
@@ -393,8 +399,6 @@ function YouWin(){};
 YouWin.prototype = {
   create: function(){
     this.game.add.text(250, 200, "CRUSH YOUR GOALS", {font: "16px Arial", fill: "#FFFFFF"})
-    GlobalGame.backgroundMusic.loop = false;
-    GlobalGame.backgroundMusic.stop();
     this.game.input.onDown.add(this.restartGame);
   },
   update: function(){
