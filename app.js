@@ -232,7 +232,7 @@ function Meteor(state){
   Phaser.Sprite.call(this, this.game, 0, 0, 'meteor');
   this.exists = false;
   this.alive = false;
-  this.anchor.setTo(0.5, 0.5);
+  this.anchor.setTo(0.5, 0);
   this.game.add.existing(this);
   this.game.physics.arcade.enable(this);
   this.body.collideWorldBounds = false;
@@ -357,7 +357,7 @@ function Preloader(){};
 
 Preloader.prototype = {
   preload: function(){
-    this.game.load.image('background', 'assets/rockface_background.png')
+    this.game.load.image('background', 'assets/mountainBackground.png')
     this.game.load.image('climber', 'assets/climber.png');
     this.game.load.image('plane', 'assets/plane.png');
     this.game.load.image('meteor', 'assets/meteor.png');
